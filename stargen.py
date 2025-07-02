@@ -41,12 +41,14 @@ def list_stringer(input_list):
 
 class World:
     def __init__(self, xylocation):
-        self.xlocation = xylocation[0]
-        self.ylocation = xylocation[1]
-        if self.ylocation != 10:
-            self.location_string = f"0{self.xlocation}0{self.ylocation}"
-        elif self.ylocation == 10:
-            self.location_string = f"0{self.xlocation}10"
+        self.location = [xylocation[0], xylocation[1]]
+        self.location_string = ""
+        if self.location[1] != 10:
+            self.location_string = f"0{self.location[1]}0{self.location[0]}"
+        elif self.location[1] == 10:
+            self.location_string = f"0{self.location[0]}10"
+        else:
+            self.location_string = f"0{self.location[1]}0{self.location[0]}"
 
     def generate_world(self):
         self.name = random_line("data/worlds.txt")
@@ -174,9 +176,3 @@ class World:
         if self.atmosphere in (0, 1) and self.hydrographics >= 1:
             self.trade_codes.append("Ic")
         self.trade_string = list_stringer(self.trade_codes)
-
-
-if __name__ == "__main__":
-    world = World((1, 1))
-    world.generate_world()
-    print(f"{world.location_string} {world.name} {world.uwp_string} {world.gas_giant} {world.base} {world.trade_string}")

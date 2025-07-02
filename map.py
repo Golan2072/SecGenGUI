@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+import stargen
 
 
 def draw_hex(ax, center_x, center_y, size, facecolor='black', edgecolor='xkcd:neon green'):
@@ -52,10 +53,10 @@ def generate_hex_grid(cols, rows, size, show_labels=True, worlds=[]):
                     y + img_size / 2
                 ]
                 ax.imshow(world_image, extent=extent, zorder=10)
-                gg = Image.open("app/waterworld.png").convert("RGBA")
-                imbox = OffsetImage(gg, zoom=0.2)
-                ab = AnnotationBbox(imbox, (x+0.45, y+0.45), frameon=False)
-                ax.add_artist(ab)
+                # gg = Image.open("app/waterworld.png").convert("RGBA")
+                # imbox = OffsetImage(gg, zoom=0.2)
+                # ab = AnnotationBbox(imbox, (x+0.45, y+0.45), frameon=False)
+                # ax.add_artist(ab)
             if world_label:
                 ax.text(
                     x, y - size * 0.6,
@@ -76,15 +77,30 @@ def generate_hex_grid(cols, rows, size, show_labels=True, worlds=[]):
 
     return fig
 
+def location_parser(location_string):
+    location = [0, 0]
+    if location_string[2] == "1" and location_string[3] == "0":
+        location[0] = int(location_string[1])
+        location[1] = 10
+    else:
+        location[0] = int(location_string[1])
+        location[1] = int(location_string[3])    
+    return (location[0], location[1])
 
-if __name__ == "__main__":
-    st.markdown(":green[Subsector Map]")
+def world_type_parser(uwp):
     waterworld = Image.open("app/waterworld.png").convert("RGBA")
     nowaterworld = Image.open("app/nowaterworld.png").convert("RGBA")
-    worlds = [
-            {'position': (3, 5), 'image': waterworld, 'label': "TEST"},
-            {'position': (6, 2), 'image': nowaterworld, 'label': "SAMPLE"}
-        ]
+    if uwp[3] == "A":
+        return waterworld
+    elif int(uwp[3]) > 0:
+        return waterworld
+    else:
+        return nowaterworld       
+
+def render_map(map_data_list):
+    worlds = []
+    for i in range(len(map_data_list)):    
+        worlds.append({"position": location_parser(map_data_list[i]["Hex"]), "label": map_data_list[i]["Name"], "image": world_type_parser(map_data_list[i]["UWP"])})
     fig = generate_hex_grid(8, 10, 1.0, True, worlds)
     fig.patch.set_facecolor('black')
     st.pyplot(fig)

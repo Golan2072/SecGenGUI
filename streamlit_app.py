@@ -28,8 +28,17 @@ if __name__ == "__main__":
             if subsector[column][row] is not False:
                 subsector_list.append({"Hex": subsector[column][row].location_string, "Name": subsector[column][row].name, "UWP": subsector[column][row].uwp_string, "GG": subsector[column][row].gas_giant, "Base": subsector[column][row].base, "Trade Codes": subsector[column][row].trade_string})
             else:
-                pass
+                pass      
     index=list(range(len(subsector_list)))
+    st.set_page_config(page_title="Classic Traveller Subsector Generator")
     subsector_data = pd.DataFrame(subsector_list, index = index)
-    st.table(subsector_data)
-
+    subsector_data.sort_values(by="Name", inplace=True)
+    tab1, tab2 = st.tabs(["Subsector Data", "Subsector Map"])
+    with tab1:
+        st.title("Classic Traveller RPG")
+        st.title("Subsector Data")
+        st.table(subsector_data)
+    with tab2:
+        st.title("Classic Traveller RPG")
+        st.title("Star Map")
+        map.render_map(subsector_list)
