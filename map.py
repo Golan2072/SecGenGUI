@@ -20,7 +20,7 @@ def draw_hex(ax, center_x, center_y, size, facecolor='black', edgecolor='xkcd:ne
     ax.plot(xs, ys, color=edgecolor)
     ax.fill(xs, ys, facecolor=facecolor, edgecolor=edgecolor)
 
-@st.cache_data(ttl=24*36)
+@st.cache_data(ttl=60)
 def generate_hex_grid(cols, rows, size, show_labels=True, _worlds=[]):
     height = np.sqrt(3) * size
     hex_width = 3 / 2 * size
@@ -98,7 +98,7 @@ def world_type_parser(uwp):
     else:
         return nowaterworld       
 
-@st.cache_data(ttl=24*36)
+@st.cache_data(ttl=60)
 def render_map(map_data_list):
     worlds = []
     for i in range(len(map_data_list)):    
