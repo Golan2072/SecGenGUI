@@ -20,7 +20,7 @@ def draw_hex(ax, center_x, center_y, size, facecolor='black', edgecolor='xkcd:ne
     ax.plot(xs, ys, color=edgecolor)
     ax.fill(xs, ys, facecolor=facecolor, edgecolor=edgecolor)
 
-@st.cache_data(ttl=24*3600)
+@st.cache_data(ttl=24*36)
 def generate_hex_grid(cols, rows, size, show_labels=True, _worlds=[]):
     height = np.sqrt(3) * size
     hex_width = 3 / 2 * size
@@ -29,7 +29,6 @@ def generate_hex_grid(cols, rows, size, show_labels=True, _worlds=[]):
     fig_width = cols * 1.5 * scale
     fig_height = (rows + 1.5) * np.sqrt(3) * scale
     fig, ax = plt.subplots(
-        # figsize=(fig_width, fig_height), constrained_layout=True)
             figsize=(fig_width, fig_height))
 
     font_scale = size / 1.0
@@ -90,8 +89,6 @@ def location_parser(location_string):
     return (location[0], location[1])
 
 def world_type_parser(uwp):
-    # waterworld = Image.open("app/waterworld.png").convert("RGBA")
-    # nowaterworld = Image.open("app/nowaterworld.png").convert("RGBA")
     waterworld = Image.open("app/waterworld.png")
     nowaterworld = Image.open("app/nowaterworld.png")
     if uwp[3] == "A":
@@ -101,6 +98,7 @@ def world_type_parser(uwp):
     else:
         return nowaterworld       
 
+@st.cache_data(ttl=24*36)
 def render_map(map_data_list):
     worlds = []
     for i in range(len(map_data_list)):    
