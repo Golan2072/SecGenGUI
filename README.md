@@ -1,6 +1,9 @@
 # SecGenGUI
 Web-based Classic Traveller TTRPG subsector generator using Streamlit
 
+0.52, July 3rd, 2025
+- Fixed a major memory leak bug.
+
 v0.4, July 2nd, 2025
 - First MVP. Has a world table tab and a starmap tab.
 
