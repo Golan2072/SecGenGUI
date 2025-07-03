@@ -5,6 +5,7 @@ from PIL import Image
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 
+
 def draw_hex(ax, center_x, center_y, size, facecolor='black', edgecolor='xkcd:neon green'):
     angle_offset = 0
     hexagon = [
@@ -28,7 +29,9 @@ def generate_hex_grid(cols, rows, size, show_labels=True, worlds=[]):
     fig_width = cols * 1.5 * scale
     fig_height = (rows + 1.5) * np.sqrt(3) * scale
     fig, ax = plt.subplots(
-        figsize=(fig_width, fig_height), constrained_layout=True)
+        # figsize=(fig_width, fig_height), constrained_layout=True)
+            figsize=(fig_width, fig_height))
+
     font_scale = size / 1.0
     for col in range(cols):
         for row in range(rows):
@@ -102,6 +105,6 @@ def render_map(map_data_list):
     worlds = []
     for i in range(len(map_data_list)):    
         worlds.append({"position": location_parser(map_data_list[i]["Hex"]), "label": map_data_list[i]["Name"], "image": world_type_parser(map_data_list[i]["UWP"])})
-    fig = generate_hex_grid(8, 10, 1.0, True, worlds)
-    fig.patch.set_facecolor('black')
-    st.pyplot(fig)
+    figure = generate_hex_grid(8, 10, 1.0, True, worlds)
+    figure.patch.set_facecolor('black')
+    st.pyplot(figure)
