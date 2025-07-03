@@ -20,8 +20,8 @@ def draw_hex(ax, center_x, center_y, size, facecolor='black', edgecolor='xkcd:ne
     ax.plot(xs, ys, color=edgecolor)
     ax.fill(xs, ys, facecolor=facecolor, edgecolor=edgecolor)
 
-
-def generate_hex_grid(cols, rows, size, show_labels=True, worlds=[]):
+@st.cache_data(ttl=24*3600)
+def generate_hex_grid(cols, rows, size, show_labels=True, _worlds=[]):
     height = np.sqrt(3) * size
     hex_width = 3 / 2 * size
     hex_height = height
@@ -41,7 +41,7 @@ def generate_hex_grid(cols, rows, size, show_labels=True, worlds=[]):
             draw_hex(ax, x, y, size)
             world_label = None
             world_image = None
-            for world in worlds:
+            for world in _worlds:
                 if world['position'] == (col + 1, row + 1):
                     world_label = world.get('label', '')
                     world_image = world.get('image', None)
