@@ -1,7 +1,7 @@
 import map
 import stargen
 import streamlit as st
-import pandas as pd
+# import pandas as pd
 
 
 def sector_gen():
@@ -31,13 +31,13 @@ if __name__ == "__main__":
                 pass      
     index=list(range(len(subsector_list)))
     st.set_page_config(page_title="Classic Traveller Subsector Generator")
-    subsector_data = pd.DataFrame(subsector_list, index = index)
-    subsector_data.sort_values(by="Name", inplace=True)
+    # subsector_data = pd.DataFrame(subsector_list, index = index)
+    # subsector_data.sort_values(by="Name", inplace=True)
     tab1, tab2 = st.tabs(["Subsector Data", "Subsector Map"])
     with tab1:
         st.title("Classic Traveller RPG")
         st.title("Subsector Data")
-        st.table(subsector_data)
+        st.table(subsector_list)
     with tab2:
         st.title("Classic Traveller RPG")
         st.title("Star Map")

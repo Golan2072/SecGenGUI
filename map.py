@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-import stargen
 
 
 def draw_hex(ax, center_x, center_y, size, facecolor='black', edgecolor='xkcd:neon green'):
@@ -88,8 +87,10 @@ def location_parser(location_string):
     return (location[0], location[1])
 
 def world_type_parser(uwp):
-    waterworld = Image.open("app/waterworld.png").convert("RGBA")
-    nowaterworld = Image.open("app/nowaterworld.png").convert("RGBA")
+    # waterworld = Image.open("app/waterworld.png").convert("RGBA")
+    # nowaterworld = Image.open("app/nowaterworld.png").convert("RGBA")
+    waterworld = Image.open("app/waterworld.png")
+    nowaterworld = Image.open("app/nowaterworld.png")
     if uwp[3] == "A":
         return waterworld
     elif int(uwp[3]) > 0:
