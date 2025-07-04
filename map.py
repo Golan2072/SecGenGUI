@@ -20,7 +20,7 @@ def draw_hex(ax, center_x, center_y, size, facecolor='black', edgecolor='xkcd:ne
     ax.plot(xs, ys, color=edgecolor)
     ax.fill(xs, ys, facecolor=facecolor, edgecolor=edgecolor)
 
-@st.cache_data(ttl=60)
+@st.cache_data(ttl=30)
 def generate_hex_grid(cols, rows, size, show_labels=True, _worlds=[]):
     height = np.sqrt(3) * size
     hex_width = 3 / 2 * size
@@ -40,10 +40,14 @@ def generate_hex_grid(cols, rows, size, show_labels=True, _worlds=[]):
             draw_hex(ax, x, y, size)
             world_label = None
             world_image = None
+            world_gg = None
+            world_starport = None
             for world in _worlds:
                 if world['position'] == (col + 1, row + 1):
                     world_label = world.get('label', '')
                     world_image = world.get('image', None)
+                    world_gg = world.get('gg', '')
+                    world_starport = world.get('starport', '')
                     break
             if world_image is not None:
                 img_size = size * 0.75
@@ -54,14 +58,24 @@ def generate_hex_grid(cols, rows, size, show_labels=True, _worlds=[]):
                     y + img_size / 2
                 ]
                 ax.imshow(world_image, extent=extent, zorder=10)
-                # gg = Image.open("app/waterworld.png").convert("RGBA")
-                # imbox = OffsetImage(gg, zoom=0.2)
-                # ab = AnnotationBbox(imbox, (x+0.45, y+0.45), frameon=False)
-                # ax.add_artist(ab)
+                if world_gg == "G":
+                    gg = Image.open("app/waterworld.png")
+                    imbox = OffsetImage(gg, zoom=0.15)
+                    ab = AnnotationBbox(imbox, (x+0.45, y+0.45), frameon=False)
+                    ax.add_artist(ab)
+                else:
+                    pass
             if world_label:
                 ax.text(
                     x, y - size * 0.6,
                     world_label,
+                    ha='center', va='bottom',
+                    fontsize=16 * font_scale, color='xkcd:neon green', zorder=11
+                )
+            if world_starport:
+                ax.text(
+                x, y + size * 0.5,
+                    world_starport,
                     ha='center', va='bottom',
                     fontsize=16 * font_scale, color='xkcd:neon green', zorder=11
                 )
@@ -98,11 +112,11 @@ def world_type_parser(uwp):
     else:
         return nowaterworld       
 
-@st.cache_data(ttl=60)
+@st.cache_data(ttl=30)
 def render_map(map_data_list):
     worlds = []
     for i in range(len(map_data_list)):    
-        worlds.append({"position": location_parser(map_data_list[i]["Hex"]), "label": map_data_list[i]["Name"], "image": world_type_parser(map_data_list[i]["UWP"])})
+        worlds.append({"position": location_parser(map_data_list[i]["Hex"]), "label": map_data_list[i]["Name"], "image": world_type_parser(map_data_list[i]["UWP"]), "gg": map_data_list[i]["GG"], "starport": map_data_list[i]["UWP"][0]})
     figure = generate_hex_grid(8, 10, 1.0, True, worlds)
     figure.patch.set_facecolor('black')
     st.pyplot(figure)
