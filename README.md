@@ -1,6 +1,9 @@
 # SecGenGUI
 Web-based Classic Traveller TTRPG subsector generator using Streamlit
 
+0.6, July 4th, 2025
+- Gas giants and starports implemented on the map.
+
 0.52, July 3rd, 2025
 - Fixed a major memory leak bug.
 
